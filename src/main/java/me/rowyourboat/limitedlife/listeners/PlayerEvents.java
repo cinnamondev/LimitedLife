@@ -38,6 +38,7 @@ public class PlayerEvents implements Listener {
 
         List<String> boogeymenUUIDList = SaveHandler.getBoogeymenList();
         Player killer = deadPlayer.getKiller();
+
         if (killer != null) {
             if (boogeymenUUIDList.contains(killer.getUniqueId().toString())) {
                 SaveHandler.cureBoogeyman(killer.getUniqueId().toString(), true);
@@ -69,7 +70,14 @@ public class PlayerEvents implements Listener {
         } else {
             newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
         }
-        LimitedLife.TeamHandler.changeTeamAndGamemodeAccordingly(deadPlayer, SaveHandler.getPlayerTimeLeft(deadPlayer));
+
+        long timeLeft = SaveHandler.getPlayerTimeLeft(deadPlayer);
+
+        if (timeLeft > 0 || LimitedLife.SaveHandler.getMarkedAsDeadList().contains(deadPlayer.getUniqueId().toString())) {
+            event.setKeepInventory(true);
+            event.getDrops().clear();
+        }
+        LimitedLife.TeamHandler.changeTeamAndGamemodeAccordingly(deadPlayer, timeLeft);
     }
 
     public void newPendingTimeSubtractionTitle(Player deadPlayer, long timeToSubtract) {

@@ -77,8 +77,10 @@ public class InventoryEvents implements Listener {
                 if (player.isOnline()) {
                     ItemStack helmet = player.getInventory().getHelmet();
                     if (helmet != null) {
-                        helmet.setAmount(0);
-                        player.sendMessage(ChatColor.DARK_RED + "Helmets are prohibited!");
+                        if (helmetTypes.contains(helmet.getType())) {
+                            helmet.setAmount(0);
+                            player.sendMessage(ChatColor.DARK_RED + "Helmets are prohibited!");
+                        }
                     }
                 }
             }, 5);

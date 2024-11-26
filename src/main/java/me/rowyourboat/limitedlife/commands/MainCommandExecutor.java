@@ -28,18 +28,16 @@ public class MainCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String s, String[] args) {
         if (args.length >= 1) {
-            if (args[0].equalsIgnoreCase("timer"))
-                return TimerCommand.execute(commandSender, args);
-            else if (args[0].equalsIgnoreCase("boogeyman"))
-                return BoogeymanCommand.execute(commandSender, args);
-            else if (args[0].equalsIgnoreCase("modifytime"))
-                return ModifyTimeCommand.execute(commandSender, args);
-            else if (args[0].equalsIgnoreCase("gettime"))
-                return GetTimeCommand.execute(commandSender, args);
-            else if (args[0].equalsIgnoreCase("reload"))
-                return ReloadCommand.execute(commandSender);
-            else if (args[0].equalsIgnoreCase("help"))
-                return HelpCommand.execute(commandSender, args);
+            return switch (args[0].toLowerCase()) {
+                case "timer" -> TimerCommand.execute(commandSender, args);
+                case "boogeyman" -> BoogeymanCommand.execute(commandSender, args);
+                case "modifytime" -> ModifyTimeCommand.execute(commandSender, args);
+                case "gettime" -> GetTimeCommand.execute(commandSender, args);
+                case "reload" -> ReloadCommand.execute(commandSender);
+                case "help" -> TimerCommand.execute(commandSender, args);
+                case "massnerf" -> MassNerfCommand.execute(commandSender, args);
+                default -> HelpCommand.execute(commandSender, args);
+            };
         }
         return false;
     }

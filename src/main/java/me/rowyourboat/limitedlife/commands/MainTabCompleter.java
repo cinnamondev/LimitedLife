@@ -55,7 +55,7 @@ public class MainTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String s, String[] args) {
         if (args.length == 1)
-            return stringToList("timer,boogeyman,modifytime,gettime,reload,help");
+            return stringToList("timer,boogeyman,modifytime,gettime,reload,massnerf,help");
         else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("timer"))
                 return stringToList("start,pause,reset");

@@ -4,6 +4,7 @@ import me.rowyourboat.limitedlife.LimitedLife;
 import me.rowyourboat.limitedlife.data.SaveHandler;
 import me.rowyourboat.limitedlife.util.SecondsToClockFormat;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -72,6 +75,17 @@ public class PlayerEvents implements Listener {
         }
 
         long timeLeft = SaveHandler.getPlayerTimeLeft(deadPlayer);
+
+        if (config.getBoolean("other.drop-heads", false)) {
+            // player has just died-- drop head
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD,1);
+            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+            skullMeta.setOwningPlayer(deadPlayer);
+            skull.setItemMeta(skullMeta);
+
+            event.getDrops().add(skull);
+        }
+
 
         if (timeLeft > 0 || LimitedLife.SaveHandler.getMarkedAsDeadList().contains(deadPlayer.getUniqueId().toString())) {
             event.setKeepInventory(true);

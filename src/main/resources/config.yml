@@ -217,6 +217,7 @@ other:
   ## Quick command to find out whether you're the boogeyman
   am-i-the-boogeyman-command: true
 
+  drop-heads: true
   ## Determines whether a message will be sent out to all other admins whenever someone runs a command
   ## Example: [Alex: Added 30 minutes to Steve's timer]
   command-feedback: true

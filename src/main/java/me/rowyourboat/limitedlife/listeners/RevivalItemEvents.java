@@ -159,7 +159,12 @@ public class RevivalItemEvents implements Listener {
                 SaveHandler.setPlayerTimeLeft(SKULL_OWNER, plugin.getConfig().getLong("timer.seconds-on-revival"));
                 LimitedLife.currentGlobalTimerTask.startPlayerTimer(SKULL_OWNER);
                 HUMAN_ENTITY.playEffect(EntityEffect.TOTEM_RESURRECT);
-                if (plugin.getConfig().getBoolean("recipes.revival-item.teleport-to-world-spawn")) teleportToWorldSpawn(SKULL_OWNER.getPlayer());
+                if (plugin.getConfig().getBoolean("recipes.revival-item.teleport-to-world-spawn")) {
+                    teleportToWorldSpawn(SKULL_OWNER.getPlayer());
+                } else {
+                    Player toRevive = SKULL_OWNER.getPlayer();
+                    toRevive.teleport(HUMAN_ENTITY.getLocation());
+                }
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
                     onlinePlayer.sendTitle(ChatColor.YELLOW + SKULL_OWNER.getName(), "has been revived!", 20, 100, 20);
                     if (onlinePlayer.getUniqueId() != HUMAN_ENTITY.getUniqueId())

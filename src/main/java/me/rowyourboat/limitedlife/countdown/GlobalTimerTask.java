@@ -8,7 +8,11 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -61,7 +65,17 @@ public class GlobalTimerTask {
                             Player onlinePlayer = offlinePlayer.getPlayer();
                             if (onlinePlayer != null) {
                                 onlinePlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(SecondsToClockFormat.convert(playerTimeLeft, true)));
-                                Bukkit.getScheduler().runTask(plugin, () -> TeamHandler.changeTeamAndGamemodeAccordingly(onlinePlayer, playerTimeLeft));
+                                Bukkit.getScheduler().runTask(plugin, () -> {
+                                    if (playerTimeLeft == 1) { // technically theyre alive for just a bit less buttt.......
+                                        // if they manage to get  nearly dead near this, it's a miracle of fate
+                                        onlinePlayer.setHealth(0);
+                                        // this is to force those about to die to drop their items.
+                                        // should also be the case their gm is changed in PlayerEvents now.
+                                    } else {
+                                        TeamHandler.changeTeamAndGamemodeAccordingly(onlinePlayer, playerTimeLeft);
+                                    }
+
+                                });
                             }
 
                         }

@@ -53,22 +53,20 @@ public class PlayerEvents implements Listener {
                 if (killerTeamName.equalsIgnoreCase("RED") && victimTeamName.equalsIgnoreCase("RED")){
                     SaveHandler.addPlayerTime(killer, LimitedLife.plugin.getConfig().getLong("rewards.time-gain-on-kill"));
                     newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
-                    return;
-                }
-
-                if (killerTeamName.equalsIgnoreCase(victimTeamName)) {
-
-                    if (config.getBoolean("rewards.add-time-on-kill-same-colour"))
-                        SaveHandler.addPlayerTime(killer, LimitedLife.plugin.getConfig().getLong("rewards.time-gain-on-kill"));
-
-                    if (config.getBoolean("penalties.subtract-time-on-death-same-colour"))
-                        newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
-
                 } else {
-                    SaveHandler.addPlayerTime(killer, LimitedLife.plugin.getConfig().getLong("rewards.time-gain-on-kill"));
-                    newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
-                }
+                    if (killerTeamName.equalsIgnoreCase(victimTeamName)) {
 
+                        if (config.getBoolean("rewards.add-time-on-kill-same-colour"))
+                            SaveHandler.addPlayerTime(killer, LimitedLife.plugin.getConfig().getLong("rewards.time-gain-on-kill"));
+
+                        if (config.getBoolean("penalties.subtract-time-on-death-same-colour"))
+                            newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
+
+                    } else {
+                        SaveHandler.addPlayerTime(killer, LimitedLife.plugin.getConfig().getLong("rewards.time-gain-on-kill"));
+                        newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
+                    }
+                }
             }
         } else {
             newPendingTimeSubtractionTitle(deadPlayer, config.getLong("penalties.time-lost-on-death"));
